@@ -9,6 +9,9 @@
 #import "SESpringBoard.h"
 #import "SEViewController.h"
 
+#define IS_IPHONE (!IS_IPAD)
+#define IS_IPAD (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPhone)
+
 @implementation SESpringBoard
 
 @synthesize items, title, launcher, isInEditingMode, itemCounts;
@@ -68,7 +71,7 @@
         CGRect doneButton = CGRectMake(appSize.width - 55, 5, 50, 34.0);
         CGRect addButtonFrame = CGRectMake(5, 5, 50, 34.0);
         
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        if (IS_IPAD)
         {
             vpad = 0;
             hpad = 0;
@@ -443,13 +446,18 @@
 
         if ([newObject boolValue]) {
             appSize = cAppSize;
-            hpad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 0 : 18;
-            vpad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 0 : 10;
+            if (IS_IPAD) {
+                hpad = 0;
+                vpad = 0;
+            } else {
+                hpad = 18;
+                vpad = 10;
+            }
 
         } else {
             appSize = CGSizeMake(cAppSize.height, cAppSize.width);
-            hpad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 15 : 0;
-            vpad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 0 : 0;
+            hpad = (IS_IPAD) ? 15 : 0;
+            vpad = 0;
         }
         
         // NSLog(@"viewIsCurrentlyPortrait %d", [newObject intValue]);
