@@ -18,7 +18,10 @@
 }
 
 - (id) initWithTitle:(NSString *)boardTitle items:(NSMutableArray *)menuItems image:(UIImage *) image{
-    self = [super initWithFrame:CGRectMake(0, 0, 320, 460)];    
+    CGSize appSize = [[UIScreen mainScreen] applicationFrame].size;
+    
+    self = [super initWithFrame:CGRectMake(0, 0, appSize.width, appSize.height)];
+
     [self setUserInteractionEnabled:YES];
     if (self) {
         self.launcher = image;
@@ -26,10 +29,10 @@
         
         // create the top bar
         self.title = boardTitle;
-        navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+        navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, appSize.width, 44)];
         
         // add a simple for displaying a title on the bar
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, appSize.width, 44)];
         titleLabel.textColor = [UIColor whiteColor];
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.textAlignment = UITextAlignmentCenter;
@@ -50,51 +53,72 @@
         [self addSubview:navigationBar];
         
         // create a container view to put the menu items inside
-        itemsContainer = [[UIScrollView alloc] initWithFrame:CGRectMake(10, 50, 300, 400)];
+        itemsContainer = [[UIScrollView alloc] initWithFrame:CGRectMake(10, 50, appSize.width-20, appSize.height-60)];
         itemsContainer.delegate = self;
         [itemsContainer setScrollEnabled:YES];
         [itemsContainer setPagingEnabled:YES];
         itemsContainer.showsHorizontalScrollIndicator = NO;
         [self addSubview:itemsContainer];
         
+        int itemHeight;
+        int itemWidth;
+
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        {
+            itemWidth = 149;
+            itemHeight = 150;
+        }
+        else
+        {
+            itemWidth = 100;
+            itemHeight = 100;
+        }
+        
+        int nColsPerRow = floor((appSize.width-20) / itemWidth);
+        int itemsPerPage = floor((appSize.height-60) / itemHeight) * nColsPerRow;
+        
         self.items = menuItems;
         int counter = 0;
         int horgap = 0;
         int vergap = 0;
-        int numberOfPages = (ceil((float)[menuItems count] / 12));
+        int numberOfPages = (ceil((float)[menuItems count] / itemsPerPage));
         int currentPage = 0;
+        
         for (SEMenuItem *item in self.items) {
-            currentPage = counter / 12;
+            currentPage = counter / itemsPerPage;
             item.tag = counter;
             item.delegate = self;
-            [item setFrame:CGRectMake(item.frame.origin.x + horgap + (currentPage*300), item.frame.origin.y + vergap, 100, 100)];
+            [item setFrame:CGRectMake(item.frame.origin.x + horgap + (currentPage*(appSize.width-20)), item.frame.origin.y + vergap, itemWidth, itemHeight)];
             [itemsContainer addSubview:item];
-            horgap = horgap + 100;
+            horgap = horgap + itemWidth;
             counter = counter + 1;
-            if(counter % 3 == 0){
-                vergap = vergap + 95;
+            
+            if(counter % nColsPerRow == 0){
+                vergap = vergap + itemHeight - 5;
                 horgap = 0;
             }
-            if (counter % 12 == 0) {
+            
+            if (counter % itemsPerPage == 0) {
                 vergap = 0;
+                horgap = 0;
             }
         }
         
         // record the item counts for each page
         self.itemCounts = [NSMutableArray array];
         int totalNumberOfItems = [self.items count];
-        int numberOfFullPages = totalNumberOfItems % 12;
-        int lastPageItemCount = totalNumberOfItems - numberOfFullPages%12;
+        int numberOfFullPages = totalNumberOfItems % itemsPerPage;
+        int lastPageItemCount = totalNumberOfItems - numberOfFullPages%itemsPerPage;
         for (int i=0; i<numberOfFullPages; i++)
-            [self.itemCounts addObject:[NSNumber numberWithInteger:12]];
+            [self.itemCounts addObject:[NSNumber numberWithInteger:itemsPerPage]];
         if (lastPageItemCount != 0)
             [self.itemCounts addObject:[NSNumber numberWithInteger:lastPageItemCount]];
         
-        [itemsContainer setContentSize:CGSizeMake(numberOfPages*300, itemsContainer.frame.size.height)];
+        [itemsContainer setContentSize:CGSizeMake(numberOfPages*(appSize.width-20), itemsContainer.frame.size.height)];
         [itemsContainer release];
 
         // add a page control representing the page the scrollview controls
-        pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, 433, 320, 20)];
+        pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, (appSize.height-27), appSize.width, 20)];
         if (numberOfPages > 1) {
             pageControl.numberOfPages = numberOfPages;
             pageControl.currentPage = 0;
@@ -141,6 +165,8 @@
     if (isInEditingMode)
         return;
     
+    CGSize appSize = [[UIScreen mainScreen] applicationFrame].size;
+    
     // first disable the editing mode so that items will stop wiggling when an item is launched
     [self disableEditingMode];
     
@@ -172,7 +198,7 @@
         [nav.view setFrame:CGRectMake(0,0, self.bounds.size.width, self.bounds.size.height)];
         
         // fade out the top bar
-        [navigationBar setFrame:CGRectMake(0, -44, 320, 44)];
+        [navigationBar setFrame:CGRectMake(0, -44, appSize.width, 44)];
     }];
 }
 
@@ -182,13 +208,16 @@
     SEMenuItem *menuItem = [items objectAtIndex:index];
     [menuItem removeFromSuperview];
     
+    CGSize appSize = [[UIScreen mainScreen] applicationFrame].size;
+    int w = (int) (appSize.width - 20);
+    
     int numberOfItemsInCurrentPage = [[self.itemCounts objectAtIndex:pageControl.currentPage] intValue];
     
     // First find the index of the current item with respect of the current page
     // so that only the items coming after the current item will be repositioned.
     // The index of the item can be found by looking at its coordinates
     int mult = ((int)menuItem.frame.origin.y) / 95;
-    int add = ((int)menuItem.frame.origin.x % 300)/100;
+    int add = ((int)menuItem.frame.origin.x % w)/100;
     int pageSpecificIndex = (mult*3) + add;
     int remainingNumberOfItemsInPage = numberOfItemsInCurrentPage-pageSpecificIndex;    
     
@@ -223,6 +252,8 @@
 }
 
 - (void)closeViewEventHandler: (NSNotification *) notification {
+    CGSize appSize = [[UIScreen mainScreen] applicationFrame].size;
+    
     UIView *viewToRemove = (UIView *) notification.object;    
     [UIView animateWithDuration:.3f animations:^{
         viewToRemove.alpha = 0.f;
@@ -231,7 +262,7 @@
             item.transform = CGAffineTransformIdentity;
             item.alpha = 1.f;
         }
-        [navigationBar setFrame:CGRectMake(0, 0, 320, 44)];
+        [navigationBar setFrame:CGRectMake(0, 0, appSize.width, 44)];
     } completion:^(BOOL finished) {
         [viewToRemove removeFromSuperview];
     }];

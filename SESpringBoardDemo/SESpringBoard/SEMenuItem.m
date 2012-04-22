@@ -79,7 +79,22 @@
 #pragma mark - Initialization
 
 - (id) initWithTitle:(NSString *)title :(NSString *)imageName :(UIViewController *)viewController :(BOOL)removable {
-    self = [super initWithFrame:CGRectMake(0, 0, 100, 100)];
+    
+    int itemHeight;
+    int itemWidth;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        itemWidth = 149;
+        itemHeight = 150;
+    }
+    else
+    {
+        itemWidth = 100;
+        itemHeight = 100;
+    }
+    
+    self = [super initWithFrame:CGRectMake(0, 0, itemWidth, itemHeight)];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
         vcToLoad = viewController;
@@ -111,27 +126,48 @@
 
 # pragma mark - Drawing
 
-- (void) drawRect:(CGRect)rect {    
+- (void) drawRect:(CGRect)rect {
+    
+    CGRect imgRect;
+    CGRect txtShadowRect;
+    CGRect txtRect;
+    CGRect btnRect;
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        imgRect = CGRectMake(30.0, 10.0, 90, 90);
+        txtShadowRect = CGRectMake(0.0, 102.0, 150, 20.0);
+        txtRect = CGRectMake(0.0, 100.0, 150, 20.0);
+        btnRect = CGRectMake(0, 0, 150, 160);
+    }
+    else
+    {
+        imgRect = CGRectMake(20.0, 10.0, 60, 60);
+        txtShadowRect = CGRectMake(0.0, 72.0, 100, 20.0);
+        txtRect = CGRectMake(0.0, 70.0, 100, 20.0);
+        btnRect = CGRectMake(0, 0, 150, 160);
+    }
+    
     // draw the icon image
     UIImage* img = [UIImage imageNamed:image];
-    [img drawInRect:CGRectMake(20.0, 10.0, 60, 60)];
+    [img drawInRect:imgRect];
     
     // draw the menu item title shadow
     NSString* shadowText = titleText;
     [[UIColor blackColor] set];
     UIFont *bold14 = [UIFont fontWithName:@"Helvetica-Bold" size:14];
-	[shadowText drawInRect:CGRectMake(0.0, 72.0, 100, 20.0) withFont:bold14 lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentCenter];
+    [shadowText drawInRect:txtShadowRect withFont:bold14 lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentCenter];
     
     // draw the menu item title
     NSString* text = titleText;
     [[UIColor whiteColor] set];
-	[text drawInRect:CGRectMake(0.0, 70.0, 100, 20.0) withFont:bold14 lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentCenter];
+    [text drawInRect:txtRect withFont:bold14 lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentCenter];
     
     // place a clickable button on top of everything
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setFrame:CGRectMake(0, 0, 100, 110)];
     button.backgroundColor = [UIColor clearColor];
     [button addTarget:self action:@selector(clickItem:) forControlEvents:UIControlEventTouchUpInside];
+    [button setFrame:btnRect];
     button.tag = tag;
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(pressedLong:)];
