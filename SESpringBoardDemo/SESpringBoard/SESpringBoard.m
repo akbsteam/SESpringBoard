@@ -73,7 +73,6 @@
         
         if (IS_IPAD)
         {
-            vpad = 0;
             hpad = 0;
             
             itemSize = CGSizeMake(149, 149);
@@ -81,12 +80,12 @@
         }
         else
         {
-            vpad = 0;
             hpad = 18;
             
             itemSize = CGSizeMake(75, 90);
             cAppSize = CGSizeMake(320, 480);
         }
+        vpad = 0;
         appSize = cAppSize;
         
         self.launcher = image;
