@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		15A77F02154419510054E363 /* ViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15A77EFE154419510054E363 /* ViewController-iPad.xib */; };
+		15A77F03154419510054E363 /* ViewController-iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15A77F00154419510054E363 /* ViewController-iPhone.xib */; };
 		7514C0CC14654F0700FEF1E6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7514C0CB14654F0700FEF1E6 /* UIKit.framework */; };
 		7514C0CE14654F0700FEF1E6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7514C0CD14654F0700FEF1E6 /* Foundation.framework */; };
 		7514C0D014654F0700FEF1E6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7514C0CF14654F0700FEF1E6 /* CoreGraphics.framework */; };
@@ -14,7 +16,6 @@
 		7514C0D814654F0700FEF1E6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7514C0D714654F0700FEF1E6 /* main.m */; };
 		7514C0DC14654F0700FEF1E6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7514C0DB14654F0700FEF1E6 /* AppDelegate.m */; };
 		7514C0DF14654F0700FEF1E6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7514C0DE14654F0700FEF1E6 /* ViewController.m */; };
-		7514C0E214654F0700FEF1E6 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7514C0E014654F0700FEF1E6 /* ViewController.xib */; };
 		7514C0EB14654F5C00FEF1E6 /* SEMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7514C0EA14654F5C00FEF1E6 /* SEMenuItem.m */; };
 		7514C0EE14654F9C00FEF1E6 /* SESpringBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 7514C0ED14654F9B00FEF1E6 /* SESpringBoard.m */; };
 		7514C12A1465AA4900FEF1E6 /* ChildViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7514C1281465AA4900FEF1E6 /* ChildViewController.m */; };
@@ -36,6 +37,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		15A77EFF154419510054E363 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/ViewController-iPad.xib"; sourceTree = "<group>"; };
+		15A77F01154419510054E363 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/ViewController-iPhone.xib"; sourceTree = "<group>"; };
 		7514C0C714654F0700FEF1E6 /* SESpringBoardDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SESpringBoardDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7514C0CB14654F0700FEF1E6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7514C0CD14654F0700FEF1E6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -48,7 +51,6 @@
 		7514C0DB14654F0700FEF1E6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		7514C0DD14654F0700FEF1E6 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		7514C0DE14654F0700FEF1E6 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		7514C0E114654F0700FEF1E6 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
 		7514C0E914654F5C00FEF1E6 /* SEMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEMenuItem.h; sourceTree = "<group>"; };
 		7514C0EA14654F5C00FEF1E6 /* SEMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEMenuItem.m; sourceTree = "<group>"; };
 		7514C0EC14654F9B00FEF1E6 /* SESpringBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SESpringBoard.h; sourceTree = "<group>"; };
@@ -124,7 +126,8 @@
 				7514C0DB14654F0700FEF1E6 /* AppDelegate.m */,
 				7514C0DD14654F0700FEF1E6 /* ViewController.h */,
 				7514C0DE14654F0700FEF1E6 /* ViewController.m */,
-				7514C0E014654F0700FEF1E6 /* ViewController.xib */,
+				15A77EFE154419510054E363 /* ViewController-iPad.xib */,
+				15A77F00154419510054E363 /* ViewController-iPhone.xib */,
 				7514C1271465AA4900FEF1E6 /* ChildViewController.h */,
 				7514C1281465AA4900FEF1E6 /* ChildViewController.m */,
 				7514C1291465AA4900FEF1E6 /* ChildViewController.xib */,
@@ -229,7 +232,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7514C0D614654F0700FEF1E6 /* InfoPlist.strings in Resources */,
-				7514C0E214654F0700FEF1E6 /* ViewController.xib in Resources */,
 				7514C12B1465AA4900FEF1E6 /* ChildViewController.xib in Resources */,
 				7514C12E1465BC5000FEF1E6 /* navbtn_home.png in Resources */,
 				7514C12F1465BC5000FEF1E6 /* navbtn_home@2x.png in Resources */,
@@ -243,6 +245,8 @@
 				75272FC31465FF6A004F0CF3 /* su.png in Resources */,
 				75272FC41465FF6A004F0CF3 /* digg.png in Resources */,
 				7576E995150A266D002836BE /* btn_delete.png in Resources */,
+				15A77F02154419510054E363 /* ViewController-iPad.xib in Resources */,
+				15A77F03154419510054E363 /* ViewController-iPhone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,20 +270,28 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		15A77EFE154419510054E363 /* ViewController-iPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				15A77EFF154419510054E363 /* en */,
+			);
+			name = "ViewController-iPad.xib";
+			sourceTree = "<group>";
+		};
+		15A77F00154419510054E363 /* ViewController-iPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				15A77F01154419510054E363 /* en */,
+			);
+			name = "ViewController-iPhone.xib";
+			sourceTree = "<group>";
+		};
 		7514C0D414654F0700FEF1E6 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				7514C0D514654F0700FEF1E6 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		7514C0E014654F0700FEF1E6 /* ViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				7514C0E114654F0700FEF1E6 /* en */,
-			);
-			name = ViewController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -331,10 +343,14 @@
 		7514C0E614654F0700FEF1E6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SESpringBoardDemo/SESpringBoardDemo-Prefix.pch";
 				INFOPLIST_FILE = "SESpringBoardDemo/SESpringBoardDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -342,10 +358,14 @@
 		7514C0E714654F0700FEF1E6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SESpringBoardDemo/SESpringBoardDemo-Prefix.pch";
 				INFOPLIST_FILE = "SESpringBoardDemo/SESpringBoardDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

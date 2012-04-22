@@ -18,7 +18,7 @@
 }
 
 - (id) initWithTitle:(NSString *)boardTitle items:(NSMutableArray *)menuItems image:(UIImage *) image{
-    self = [super initWithFrame:CGRectMake(0, 0, 320, 460)];
+    self = [super initWithFrame:CGRectMake(0, 0, 320, 460)];    
     [self setUserInteractionEnabled:YES];
     if (self) {
         self.launcher = image;
