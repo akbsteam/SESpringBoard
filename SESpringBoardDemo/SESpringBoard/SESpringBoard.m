@@ -110,6 +110,9 @@
         
         // add a page control representing the page the scrollview controls
         pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, (appSize.height-27), appSize.width, 20)];
+        pageControl.autoresizingMask = UIViewAutoresizingNone;
+
+        
         if (numberOfPages > 1) {
             pageControl.numberOfPages = numberOfPages;
             pageControl.currentPage = 0;
