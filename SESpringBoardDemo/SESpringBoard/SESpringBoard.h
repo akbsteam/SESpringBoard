@@ -15,6 +15,7 @@
     UIScrollView *itemsContainer;
     UIPageControl *pageControl;
     UIButton *doneEditingButton;
+    UIButton *addButton;
     UILabel *titleLabel;
     
     CGSize itemSize;

@@ -8,6 +8,7 @@
 
 #import "SESpringBoard.h"
 #import "SEViewController.h"
+#import "ChildViewController.h"
 
 @implementation SESpringBoard
 
@@ -15,6 +16,46 @@
 
 - (IBAction) doneEditingButtonClicked {
     [self disableEditingMode];
+}
+
+- (IBAction) addButtonClicked {
+    ChildViewController *vc1 = [[[ChildViewController alloc] initWithNibName:@"ChildViewController" bundle:nil] autorelease];
+    
+    SEMenuItem *item = [SEMenuItem initWithTitle:@"facebook" imageName:@"facebook.png" viewController:vc1 removable:YES];
+    
+    item.delegate = self;
+    [item setFrame:CGRectMake(0, 0, itemSize.width, itemSize.height)];
+    [itemsContainer addSubview:item];
+    
+    int maxItemsPerPage = [self itemsPerPage];
+    int page = 0;
+    BOOL added = NO;
+    
+    // loop through the existing pages, if there's a space, put it there
+    for (NSMutableArray *pagelist in self.items) {
+        if ([pagelist count] < maxItemsPerPage) {
+            [pagelist insertObject:item atIndex:[pagelist count]];
+            item.tag = [pagelist count];
+            added = YES;
+            break;
+        }
+        page++;
+    }
+    
+    // the item hasn't been added so we need to add a new page for it
+    if (!added) {
+        NSMutableArray *newPage = [NSMutableArray arrayWithCapacity:maxItemsPerPage];
+        [newPage insertObject:item atIndex:0];
+        item.tag = 0;
+        
+        [self.items addObject:newPage];
+        page = [self.items count];
+        
+        pageControl.numberOfPages = [self.items count];
+    }
+    
+    pageControl.currentPage = page;
+    [self layoutItems];
 }
 
 - (id) initWithTitle:(NSString *)boardTitle items:(NSMutableArray *)menuItems image:(UIImage *) image{
@@ -28,6 +69,8 @@
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         
         CGRect doneButton = CGRectMake(appSize.width - 55, 5, 50, 34.0);
+        CGRect addButtonFrame = CGRectMake(5, 5, 50, 34.0);
+        
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
         {
             vpad = 0;
@@ -72,6 +115,14 @@
         [doneEditingButton addTarget:self action:@selector(doneEditingButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [doneEditingButton setHidden:YES];
         [navigationBar addSubview:doneEditingButton];
+        
+        // add a button to the left side to allow user to add new items
+        addButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        addButton.frame = addButtonFrame;
+        [addButton setTitle:@"Add" forState:UIControlStateNormal];
+        addButton.backgroundColor = [UIColor clearColor];
+        [addButton addTarget:self action:@selector(addButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        [navigationBar addSubview:addButton];
         
         [self addSubview:navigationBar];
         
@@ -206,7 +257,10 @@
 }
 
 - (int)itemsPerPage {
-    return floor((appSize.height-60) / itemSize.height + vpad) * [self colsPerRow];
+    int rows = floor((appSize.height-60) / (itemSize.height + vpad));
+    int ipp = rows * [self colsPerRow];
+    
+    return ipp;
 }
 
 - (void)removeFromSpringboard:(int)index
