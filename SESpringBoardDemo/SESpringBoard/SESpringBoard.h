@@ -15,6 +15,13 @@
     UIScrollView *itemsContainer;
     UIPageControl *pageControl;
     UIButton *doneEditingButton;
+    UILabel *titleLabel;
+    
+    CGSize itemSize;
+    CGSize appSize;
+    CGSize cAppSize;
+    
+    int hpad;
 } 
 
 @property (nonatomic, retain) NSString *title;

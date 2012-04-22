@@ -18,28 +18,29 @@
 }
 
 - (id) initWithTitle:(NSString *)boardTitle items:(NSMutableArray *)menuItems image:(UIImage *) image{
-    CGSize appSize = [[UIScreen mainScreen] applicationFrame].size;
+    appSize = [[UIScreen mainScreen] applicationFrame].size;
     
-    self = [super initWithFrame:CGRectMake(0, 0, appSize.width, appSize.height)];
-
-    [self setUserInteractionEnabled:YES];
+    self = [super initWithFrame:CGRectMake(0, 0, appSize.width, appSize.height)];    
     
     if (self) {
+        [self setUserInteractionEnabled:YES];
+
+        self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         
-        int itemHeight;
-        int itemWidth;
+        hpad = 0;
+        
         CGRect doneButton = CGRectMake(appSize.width - 55, 5, 50, 34.0);
-        
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
         {
-            itemWidth = 149;
-            itemHeight = 149;
+            itemSize = CGSizeMake(149, 149);
+            cAppSize = CGSizeMake(768, 1024);
         }
         else
         {
-            itemWidth = 100;
-            itemHeight = 100;
+            itemSize = CGSizeMake(100, 100);
+            cAppSize = CGSizeMake(320, 480);
         }
+        appSize = cAppSize;
         
         self.launcher = image;
         self.isInEditingMode = NO;
@@ -48,15 +49,15 @@
         self.title = boardTitle;
         navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, appSize.width, 44)];
         navigationBar.barStyle = UIBarStyleBlack;
+        navigationBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         
         // add a simple for displaying a title on the bar
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, appSize.width, 44)];
+        titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, appSize.width, 44)];
         titleLabel.textColor = [UIColor whiteColor];
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.textAlignment = UITextAlignmentCenter;
         [titleLabel setText:title];
         [navigationBar addSubview:titleLabel];
-        [titleLabel release];
         
         // add a button to the right side that will become visible when the items are in editing mode
         // clicking this button ends editing mode for all items on the springboard
@@ -78,34 +79,18 @@
         itemsContainer.showsHorizontalScrollIndicator = NO;
         [self addSubview:itemsContainer];
         
-        int nColsPerRow = floor((appSize.width-20) / itemWidth);
-        int itemsPerPage = floor((appSize.height-60) / itemHeight) * nColsPerRow;
+        int nColsPerRow = floor((appSize.width-20) / itemSize.width);
+        int itemsPerPage = floor((appSize.height-60) / itemSize.height) * nColsPerRow;
         
         self.items = menuItems;
         int counter = 0;
-        int horgap = 0;
-        int vergap = 0;
         int numberOfPages = (ceil((float)[menuItems count] / itemsPerPage));
-        int currentPage = 0;
-        
+
         for (SEMenuItem *item in self.items) {
-            currentPage = counter / itemsPerPage;
             item.tag = counter;
             item.delegate = self;
-            [item setFrame:CGRectMake(item.frame.origin.x + horgap + (currentPage*(appSize.width-20)), item.frame.origin.y + vergap, itemWidth, itemHeight)];
+            [item setFrame:CGRectMake(0, 0, itemSize.width, itemSize.height)];
             [itemsContainer addSubview:item];
-            horgap = horgap + itemWidth;
-            counter = counter + 1;
-            
-            if(counter % nColsPerRow == 0){
-                vergap = vergap + itemHeight - 5;
-                horgap = 0;
-            }
-            
-            if (counter % itemsPerPage == 0) {
-                vergap = 0;
-                horgap = 0;
-            }
         }
         
         // record the item counts for each page
@@ -119,8 +104,7 @@
             [self.itemCounts addObject:[NSNumber numberWithInteger:lastPageItemCount]];
         
         [itemsContainer setContentSize:CGSizeMake(numberOfPages*(appSize.width-20), itemsContainer.frame.size.height)];
-        [itemsContainer release];
-
+        
         // add a page control representing the page the scrollview controls
         pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, (appSize.height-27), appSize.width, 20)];
         if (numberOfPages > 1) {
@@ -131,10 +115,10 @@
         
         // add listener to detect close view events
         [[NSNotificationCenter defaultCenter]
-         addObserver:self
-         selector:@selector(closeViewEventHandler:)
-         name:@"closeView"
-         object:nil ];
+            addObserver:self
+            selector:@selector(closeViewEventHandler:)
+            name:@"closeView"
+            object:nil ];
     }
     return self;
 }
@@ -150,6 +134,8 @@
     [navigationBar release];
     [pageControl release];
     [itemCounts release];
+    [titleLabel release];
+    [itemsContainer release];
     [super dealloc];
 }
 
@@ -168,8 +154,6 @@
     // if the springboard is in editing mode, do not launch any view controller
     if (isInEditingMode)
         return;
-    
-    CGSize appSize = [[UIScreen mainScreen] applicationFrame].size;
     
     // first disable the editing mode so that items will stop wiggling when an item is launched
     [self disableEditingMode];
@@ -212,7 +196,6 @@
     SEMenuItem *menuItem = [items objectAtIndex:index];
     [menuItem removeFromSuperview];
     
-    CGSize appSize = [[UIScreen mainScreen] applicationFrame].size;
     int w = (int) (appSize.width - 20);
     
     int numberOfItemsInCurrentPage = [[self.itemCounts objectAtIndex:pageControl.currentPage] intValue];
@@ -225,21 +208,7 @@
     int pageSpecificIndex = (mult*3) + add;
     int remainingNumberOfItemsInPage = numberOfItemsInCurrentPage-pageSpecificIndex;
     
-    int itemHeight;
-    int itemWidth;
-
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    {
-        itemWidth = 149;
-        itemHeight = 149;
-    }
-    else
-    {
-        itemWidth = 100;
-        itemHeight = 100;
-    }
-    
-    int nColsPerRow = floor((appSize.width-20) / itemWidth);
+    int nColsPerRow = floor((appSize.width-20) / itemSize.width);
     
     // Select the items listed after the deleted menu item
     // and move each of the ones on the current page, one step back.
@@ -254,9 +223,9 @@
                 int intVal = item.frame.origin.x;
                 // Check if it is the first item in the row
                 if (intVal % nColsPerRow == 0)
-                    [item setFrame:CGRectMake(item.frame.origin.x+((nColsPerRow-1)*itemWidth), item.frame.origin.y-(itemHeight - 5), item.frame.size.width, item.frame.size.height)];
+                    [item setFrame:CGRectMake(item.frame.origin.x+((nColsPerRow-1)*itemSize.width), item.frame.origin.y-(itemSize.height - 5), item.frame.size.width, item.frame.size.height)];
                 else 
-                    [item setFrame:CGRectMake(item.frame.origin.x-itemWidth, item.frame.origin.y, item.frame.size.width, item.frame.size.height)];
+                    [item setFrame:CGRectMake(item.frame.origin.x-itemSize.width, item.frame.origin.y, item.frame.size.width, item.frame.size.height)];
             }            
             
             // Update the tag to match with the index. Since the an item is being removed from the array, 
@@ -271,9 +240,43 @@
     [self.itemCounts replaceObjectAtIndex:pageControl.currentPage withObject:[NSNumber numberWithInteger:numberOfItemsInCurrentPage]];
 }
 
-- (void)closeViewEventHandler: (NSNotification *) notification {
-    CGSize appSize = [[UIScreen mainScreen] applicationFrame].size;
+- (void)layoutItems {
+    int nColsPerRow = floor((appSize.width-20) / itemSize.width);
+    int itemsPerPage = floor((appSize.height-60) / itemSize.height) * nColsPerRow;
+
+    int numberOfPages = (ceil((float)[self.items count] / itemsPerPage));
     
+    itemsContainer.frame = CGRectMake(10, 50, appSize.width-20, appSize.height-60);
+    [itemsContainer setContentSize:CGSizeMake(numberOfPages*(appSize.width-20), itemsContainer.frame.size.height)];
+    
+    titleLabel.frame = CGRectMake(0, 0, appSize.width, 44);
+    pageControl.frame = CGRectMake(0, (appSize.height-57), appSize.width, 20);
+    
+    int counter = 0;
+    int horgap = 0;
+    int vergap = 0;
+    int currentPage = 0;
+    
+    for (SEMenuItem *item in self.items) {
+        currentPage = counter / itemsPerPage;
+        [item setFrame:CGRectMake(horgap + hpad + (currentPage*(appSize.width-20)), vergap, itemSize.width, itemSize.height)];
+
+        horgap = horgap + itemSize.width + hpad;
+        counter = counter + 1;
+        
+        if(counter % nColsPerRow == 0){
+            vergap = vergap + itemSize.height - 5;
+            horgap = 0;
+        }
+        
+        if (counter % itemsPerPage == 0) {
+            vergap = 0;
+            horgap = 0;
+        }
+    }
+}
+
+- (void)closeViewEventHandler: (NSNotification *) notification {
     UIView *viewToRemove = (UIView *) notification.object;    
     [UIView animateWithDuration:.3f animations:^{
         viewToRemove.alpha = 0.f;
@@ -318,6 +321,32 @@
     // show the done editing button
     [doneEditingButton setHidden:NO];
     self.isInEditingMode = YES;
+}
+
+#pragma mark - KVO for Rotation
+
+- (void)observeValueForKeyPath:(NSString*)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary*)change
+                       context:(void*)context
+{
+    if ([keyPath isEqualToString:@"viewIsCurrentlyPortrait"]) {
+        NSNumber *newObject = [change objectForKey:NSKeyValueChangeNewKey];
+
+        if ([newObject boolValue]) {
+            appSize = cAppSize;
+            hpad = 0;
+
+        } else {
+            appSize = CGSizeMake(cAppSize.height, cAppSize.width);
+            hpad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 15 : 0;
+        }
+        
+        // NSLog(@"viewIsCurrentlyPortrait %d", [newObject intValue]);
+        // NSLog(@"appsize %@", NSStringFromCGSize(appSize));
+        
+        [self layoutItems];
+    }
 }
 
 @end

@@ -13,18 +13,17 @@
 
 @implementation ViewController
 
-@synthesize vc1, vc2;
+@synthesize vc1, vc2, viewIsCurrentlyPortrait;
 
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.viewIsCurrentlyPortrait = [NSNumber numberWithBool:NO];
+    
     vc1 = [[ChildViewController alloc] initWithNibName:@"ChildViewController" bundle:nil];
     vc2 = [[ChildViewController alloc] initWithNibName:@"ChildViewController" bundle:nil];
-    // Create or reference more view controllers here
-	// ...
-    
     
     // Create an array of SEMenuItem objects
     NSMutableArray *items = [NSMutableArray array];
@@ -74,6 +73,39 @@
     
     SESpringBoard *board = [SESpringBoard initWithTitle:@"Welcome" items:items launcherImage:[UIImage imageNamed:@"navbtn_home.png"]];
     [self.view addSubview:board];
+
+    [self addObserver:board forKeyPath:@"viewIsCurrentlyPortrait" options:(NSKeyValueObservingOptionOld |
+                                                                            NSKeyValueObservingOptionNew) context:nil];
+}
+
+-(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return YES;
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    BOOL currentlyPortrait = [self.viewIsCurrentlyPortrait boolValue];
+    
+    // Display correct layout for orientation
+    if ( (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) && !currentlyPortrait) ||
+        (UIInterfaceOrientationIsLandscape(self.interfaceOrientation) && currentlyPortrait) ) {
+        [self applyLayoutForInterfaceOrientation:self.interfaceOrientation];
+    }
+}
+
+#pragma mark - Rotation
+
+- (void)applyLayoutForInterfaceOrientation:(UIInterfaceOrientation)newOrientation {
+    BOOL currentlyPortrait = UIInterfaceOrientationIsPortrait(newOrientation);
+    self.viewIsCurrentlyPortrait = [NSNumber numberWithBool:currentlyPortrait];
+}
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    BOOL currentlyPortrait = [self.viewIsCurrentlyPortrait boolValue];
+    
+    if ( (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) && !currentlyPortrait) ||
+        (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) && currentlyPortrait) ) {
+        [self applyLayoutForInterfaceOrientation:toInterfaceOrientation];
+    }
 }
 
 @end
