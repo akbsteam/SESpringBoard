@@ -25,8 +25,6 @@
     
     int hpad;
     int vpad;
-    
-    ChildViewController *vc1;
 } 
 
 @property (nonatomic, retain) NSString *title;

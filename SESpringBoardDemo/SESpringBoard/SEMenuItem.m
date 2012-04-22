@@ -19,6 +19,11 @@
 
 - (void) clickItem:(id) sender {
     UIButton *theButton = (UIButton *) sender;
+    
+    if (vcToLoad == nil) {
+        vcToLoad = [[ChildViewController alloc] initWithNibName:@"ChildViewController" bundle:nil];
+    }
+    
     [[self delegate] launch:theButton.tag :vcToLoad];
 }
 
@@ -78,7 +83,7 @@
 
 #pragma mark - Initialization
 
-- (id) initWithTitle:(NSString *)title :(NSString *)imageName :(UIViewController *)viewController :(BOOL)removable {
+- (id) initWithTitle:(NSString *)title :(NSString *)imageName :(NSString *)viewController :(BOOL)removable {
     
     int itemHeight;
     int itemWidth;
@@ -97,7 +102,7 @@
     self = [super initWithFrame:CGRectMake(0, 0, itemWidth, itemHeight)];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
-        vcToLoad = viewController;
+        viewControllerClass = viewController;
         image = imageName;
         titleText = title;
         self.isInEditingMode = NO;
@@ -106,7 +111,7 @@
     return self;
 }
 
-+ (id) initWithTitle:(NSString *)title imageName:(NSString *)imageName viewController:(UIViewController *)viewController removable:(BOOL)removable  {
++ (id) initWithTitle:(NSString *)title imageName:(NSString *)imageName viewController:(NSString *)viewController removable:(BOOL)removable  {
 	SEMenuItem *tmpInstance = [[[SEMenuItem alloc] initWithTitle:title :imageName :viewController :removable] autorelease];
 	return tmpInstance;
 }

@@ -18,7 +18,7 @@
 }
 
 - (IBAction) addButtonClicked {
-    SEMenuItem *item = [SEMenuItem initWithTitle:@"facebook" imageName:@"facebook.png" viewController:vc1 removable:YES];
+    SEMenuItem *item = [SEMenuItem initWithTitle:@"facebook" imageName:@"facebook.png" viewController:@"ChildViewController" removable:YES];
     
     item.delegate = self;
     [item setFrame:CGRectMake(0, 0, itemSize.width, itemSize.height)];
@@ -61,8 +61,6 @@
     self = [super initWithFrame:CGRectMake(0, 0, appSize.width, appSize.height)];    
     
     if (self) {
-        vc1 = [[ChildViewController alloc] initWithNibName:@"ChildViewController" bundle:nil];
-        
         [self setUserInteractionEnabled:YES];
 
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -170,6 +168,8 @@
             [self addSubview:pageControl];
         }
         
+        [self layoutItems];
+        
         // add listener to detect close view events
         [[NSNotificationCenter defaultCenter]
             addObserver:self
@@ -193,9 +193,6 @@
     [itemCounts release];
     [titleLabel release];
     [itemsContainer release];
-    
-    [vc1 release];
-    
     [super dealloc];
 }
 

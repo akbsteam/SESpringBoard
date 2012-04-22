@@ -12,6 +12,7 @@
 @interface SEMenuItem : UIView {
     NSString *image;
     NSString *titleText;
+    NSString *viewControllerClass;
     UIViewController *vcToLoad;
     id <MenuItemDelegate> delegate;
     UIButton *removeButton;   
@@ -22,7 +23,7 @@
 @property BOOL isInEditingMode;
 @property (nonatomic, assign) id <MenuItemDelegate> delegate;
 
-+ (id) initWithTitle:(NSString *)title imageName:(NSString *)imageName viewController:(UIViewController *)viewController removable:(BOOL)removable;
++ (id) initWithTitle:(NSString *)title imageName:(NSString *)imageName viewController:(NSString *)viewController removable:(BOOL)removable;
 
 - (void) enableEditing;
 - (void) disableEditing;

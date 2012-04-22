@@ -10,8 +10,6 @@
 
 @interface ViewController : UIViewController
 
-@property(nonatomic, retain) UIViewController *vc1;
-@property(nonatomic, retain) UIViewController *vc2;
 @property(nonatomic, retain) NSNumber *viewIsCurrentlyPortrait;
 
 - (void)applyLayoutForInterfaceOrientation:(UIInterfaceOrientation)newOrientation;
