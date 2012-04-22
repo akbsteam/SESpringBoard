@@ -264,12 +264,13 @@
     titleLabel.frame = CGRectMake(0, 0, appSize.width, 44);
     pageControl.frame = CGRectMake(0, (appSize.height-57), appSize.width, 20);
     
-    int counter = 0;
-    int horgap = 0;
-    int vergap = 0;
     int currentPage = 0;
     
     for (NSMutableArray *pagelist in self.items) {
+        int counter = 0;
+        int horgap = 0;
+        int vergap = 0;
+        
         for (SEMenuItem *item in pagelist) {
             [item setFrame:CGRectMake(horgap + hpad + (currentPage*(appSize.width-20)), vergap, itemSize.width, itemSize.height)];
             
