@@ -133,6 +133,7 @@
     CGRect txtRect;
     CGRect btnRect;
     CGRect rmBtn;
+    int titleSize;
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
     {
@@ -141,14 +142,16 @@
         txtRect = CGRectMake(0.0, 100.0, 150, 20.0);
         btnRect = CGRectMake(0, 0, 150, 160);
         rmBtn = CGRectMake(104, 5, 20, 20);
+        titleSize = 14;
     }
     else
     {
-        imgRect = CGRectMake(20.0, 10.0, 60, 60);
-        txtShadowRect = CGRectMake(0.0, 72.0, 100, 20.0);
-        txtRect = CGRectMake(0.0, 70.0, 100, 20.0);
-        btnRect = CGRectMake(0, 0, 150, 160);
+        imgRect = CGRectMake(20.0, 10.0, 40, 40);
+        txtShadowRect = CGRectMake(0.0, 52.0, 80, 20.0);
+        txtRect = CGRectMake(0.0, 50.0, 80, 20.0);
+        btnRect = CGRectMake(0, 0, 80, 90);
         rmBtn = CGRectMake(65, 5, 20, 20);
+        titleSize = 12;
     }
     
     // draw the icon image
@@ -158,7 +161,7 @@
     // draw the menu item title shadow
     NSString* shadowText = titleText;
     [[UIColor blackColor] set];
-    UIFont *bold14 = [UIFont fontWithName:@"Helvetica-Bold" size:14];
+    UIFont *bold14 = [UIFont fontWithName:@"Helvetica-Bold" size:titleSize];
     [shadowText drawInRect:txtShadowRect withFont:bold14 lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentCenter];
     
     // draw the menu item title

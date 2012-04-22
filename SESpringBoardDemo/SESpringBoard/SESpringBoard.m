@@ -27,17 +27,21 @@
 
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         
-        hpad = 0;
-        
         CGRect doneButton = CGRectMake(appSize.width - 55, 5, 50, 34.0);
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
         {
+            vpad = 0;
+            hpad = 0;
+            
             itemSize = CGSizeMake(149, 149);
             cAppSize = CGSizeMake(768, 1024);
         }
         else
         {
-            itemSize = CGSizeMake(100, 100);
+            vpad = 0;
+            hpad = 18;
+            
+            itemSize = CGSizeMake(75, 90);
             cAppSize = CGSizeMake(320, 480);
         }
         appSize = cAppSize;
@@ -79,21 +83,19 @@
         itemsContainer.showsHorizontalScrollIndicator = NO;
         [self addSubview:itemsContainer];
         
-        int nColsPerRow = floor((appSize.width-20) / itemSize.width);
-        int itemsPerPage = floor((appSize.height-60) / itemSize.height) * nColsPerRow;
+        int nItemsPerPage = [self itemsPerPage];
+        int numberOfPages = (ceil((float)[menuItems count] / nItemsPerPage));
         
-        int counter = 0;
-        int numberOfPages = (ceil((float)[menuItems count] / itemsPerPage));
         self.items = [NSMutableArray arrayWithCapacity:numberOfPages];
-        
         for (int i=0; i<numberOfPages; i++) {
-            NSMutableArray *tmp = [NSMutableArray arrayWithCapacity:itemsPerPage];
+            NSMutableArray *tmp = [NSMutableArray arrayWithCapacity:nItemsPerPage];
             [self.items insertObject:tmp atIndex:i];
         }
 
+        int counter = 0;
         for (SEMenuItem *item in menuItems) {
-            int page = floor(counter / itemsPerPage);
-            int pos = counter % itemsPerPage;
+            int page = floor(counter / nItemsPerPage);
+            int pos = counter % nItemsPerPage;
 
             NSMutableArray *pagelist = [self.items objectAtIndex:page];
             [pagelist insertObject:item atIndex:pos];
@@ -111,7 +113,6 @@
         // add a page control representing the page the scrollview controls
         pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, (appSize.height-27), appSize.width, 20)];
         pageControl.autoresizingMask = UIViewAutoresizingNone;
-
         
         if (numberOfPages > 1) {
             pageControl.numberOfPages = numberOfPages;
@@ -198,6 +199,16 @@
     }];
 }
 
+- (int)colsPerRow {
+    int cpr = floor((appSize.width-20) / (itemSize.width + hpad));
+    
+    return cpr;
+}
+
+- (int)itemsPerPage {
+    return floor((appSize.height-60) / itemSize.height + vpad) * [self colsPerRow];
+}
+
 - (void)removeFromSpringboard:(int)index
 {
     NSMutableArray *pagelist = [self.items objectAtIndex:pageControl.currentPage];
@@ -209,7 +220,7 @@
     int numberOfItemsInCurrentPage = [pagelist count];
     int remainingNumberOfItemsInPage = numberOfItemsInCurrentPage - index;
     
-    int nColsPerRow = floor((appSize.width-20) / itemSize.width);
+    int nColsPerRow = [self colsPerRow];
     
     // Select the items listed after the deleted menu item
     // and move each of the ones on the current page, one step back.
@@ -258,8 +269,8 @@
 }
 
 - (void)layoutItems {
-    int nColsPerRow = floor((appSize.width-20) / itemSize.width);
-    int itemsPerPage = floor((appSize.height-60) / itemSize.height) * nColsPerRow;
+    int nColsPerRow = [self colsPerRow];
+    int nItemsPerPage = [self itemsPerPage];
 
     int numberOfPages = [self.items count];
     
@@ -288,7 +299,7 @@
                 horgap = 0;
             }
             
-            if (counter % itemsPerPage == 0) {
+            if (counter % nItemsPerPage == 0) {
                 vergap = 0;
                 horgap = 0;
             }
@@ -367,11 +378,13 @@
 
         if ([newObject boolValue]) {
             appSize = cAppSize;
-            hpad = 0;
+            hpad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 0 : 18;
+            vpad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 0 : 10;
 
         } else {
             appSize = CGSizeMake(cAppSize.height, cAppSize.width);
             hpad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 15 : 0;
+            vpad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 0 : 0;
         }
         
         // NSLog(@"viewIsCurrentlyPortrait %d", [newObject intValue]);

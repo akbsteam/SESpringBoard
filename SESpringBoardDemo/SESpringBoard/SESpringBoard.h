@@ -22,6 +22,7 @@
     CGSize cAppSize;
     
     int hpad;
+    int vpad;
 } 
 
 @property (nonatomic, retain) NSString *title;
