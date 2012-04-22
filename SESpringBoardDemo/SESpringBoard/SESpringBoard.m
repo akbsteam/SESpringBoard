@@ -269,6 +269,8 @@
 }
 
 - (void)layoutItems {
+    int tPage = pageControl.currentPage;
+    
     int nColsPerRow = [self colsPerRow];
     int nItemsPerPage = [self itemsPerPage];
 
@@ -276,6 +278,11 @@
     
     itemsContainer.frame = CGRectMake(10, 50, appSize.width-20, appSize.height-60);
     [itemsContainer setContentSize:CGSizeMake(numberOfPages*(appSize.width-20), itemsContainer.frame.size.height)];
+    
+    int x = tPage * itemsContainer.frame.size.width;
+    int y = 0;
+    
+    itemsContainer.contentOffset = CGPointMake(x, y);
     
     titleLabel.frame = CGRectMake(0, 0, appSize.width, 44);
     pageControl.frame = CGRectMake(0, (appSize.height-57), appSize.width, 20);
