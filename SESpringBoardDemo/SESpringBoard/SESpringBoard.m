@@ -192,7 +192,7 @@
         // fade in the selected view
         nav.view.alpha = 1.f;
         nav.view.transform = CGAffineTransformIdentity;
-        [nav.view setFrame:CGRectMake(0,0, self.bounds.size.width, self.bounds.size.height)];
+        [nav.view setFrame:CGRectMake(0,0, appSize.width, appSize.height-20)];
         
         // fade out the top bar
         [navigationBar setFrame:CGRectMake(0, -44, appSize.width, 44)];
