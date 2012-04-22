@@ -178,11 +178,13 @@
     
     [UIView animateWithDuration:.3f  animations:^{
         // fade out the buttons
-        for(SEMenuItem *item in self.items) {
-            item.transform = [self offscreenQuadrantTransformForView:item];
-            item.alpha = 0.f;
-        }
-        
+        for (NSMutableArray *pagelist in self.items) {
+            for (SEMenuItem *item in pagelist) {
+                item.transform = [self offscreenQuadrantTransformForView:item];
+                item.alpha = 0.f;
+            }
+        }  
+
         // fade in the selected view
         nav.view.alpha = 1.f;
         nav.view.transform = CGAffineTransformIdentity;
@@ -263,6 +265,7 @@
     
     titleLabel.frame = CGRectMake(0, 0, appSize.width, 44);
     pageControl.frame = CGRectMake(0, (appSize.height-57), appSize.width, 20);
+    doneEditingButton.frame = CGRectMake(appSize.width - 55, 5, 50, 34.0);
     
     int currentPage = 0;
     
@@ -297,10 +300,13 @@
     [UIView animateWithDuration:.3f animations:^{
         viewToRemove.alpha = 0.f;
         viewToRemove.transform = CGAffineTransformMakeScale(.1f, .1f);
-        for(SEMenuItem *item in self.items) {
-            item.transform = CGAffineTransformIdentity;
-            item.alpha = 1.f;
-        }
+        for (NSMutableArray *pagelist in self.items) {
+            for (SEMenuItem *item in pagelist) {
+                item.transform = CGAffineTransformIdentity;
+                item.alpha = 1.f;
+            }
+        }   
+        
         [navigationBar setFrame:CGRectMake(0, 0, appSize.width, 44)];
     } completion:^(BOOL finished) {
         [viewToRemove removeFromSuperview];
