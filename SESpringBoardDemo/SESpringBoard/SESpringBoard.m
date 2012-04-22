@@ -206,8 +206,8 @@
     }];
 }
 
-- (void)removeFromSpringboard:(int)index {
-    
+- (void)removeFromSpringboard:(int)index
+{
     // Remove the selected menu item from the springboard, it will have a animation while disappearing
     SEMenuItem *menuItem = [items objectAtIndex:index];
     [menuItem removeFromSuperview];
@@ -223,7 +223,23 @@
     int mult = ((int)menuItem.frame.origin.y) / 95;
     int add = ((int)menuItem.frame.origin.x % w)/100;
     int pageSpecificIndex = (mult*3) + add;
-    int remainingNumberOfItemsInPage = numberOfItemsInCurrentPage-pageSpecificIndex;    
+    int remainingNumberOfItemsInPage = numberOfItemsInCurrentPage-pageSpecificIndex;
+    
+    int itemHeight;
+    int itemWidth;
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        itemWidth = 149;
+        itemHeight = 149;
+    }
+    else
+    {
+        itemWidth = 100;
+        itemHeight = 100;
+    }
+    
+    int nColsPerRow = floor((appSize.width-20) / itemWidth);
     
     // Select the items listed after the deleted menu item
     // and move each of the ones on the current page, one step back.
@@ -237,10 +253,10 @@
                 
                 int intVal = item.frame.origin.x;
                 // Check if it is the first item in the row
-                if (intVal % 3 == 0)
-                    [item setFrame:CGRectMake(item.frame.origin.x+200, item.frame.origin.y-95, item.frame.size.width, item.frame.size.height)];
+                if (intVal % nColsPerRow == 0)
+                    [item setFrame:CGRectMake(item.frame.origin.x+((nColsPerRow-1)*itemWidth), item.frame.origin.y-(itemHeight - 5), item.frame.size.width, item.frame.size.height)];
                 else 
-                    [item setFrame:CGRectMake(item.frame.origin.x-100, item.frame.origin.y, item.frame.size.width, item.frame.size.height)];
+                    [item setFrame:CGRectMake(item.frame.origin.x-itemWidth, item.frame.origin.y, item.frame.size.width, item.frame.size.height)];
             }            
             
             // Update the tag to match with the index. Since the an item is being removed from the array, 

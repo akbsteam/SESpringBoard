@@ -140,7 +140,7 @@
         txtShadowRect = CGRectMake(0.0, 102.0, 150, 20.0);
         txtRect = CGRectMake(0.0, 100.0, 150, 20.0);
         btnRect = CGRectMake(0, 0, 150, 160);
-        rmBtn = CGRectMake(25, 5, 20, 20);
+        rmBtn = CGRectMake(104, 5, 20, 20);
     }
     else
     {
