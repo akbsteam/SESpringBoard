@@ -23,13 +23,31 @@
     self = [super initWithFrame:CGRectMake(0, 0, appSize.width, appSize.height)];
 
     [self setUserInteractionEnabled:YES];
+    
     if (self) {
+        
+        int itemHeight;
+        int itemWidth;
+        CGRect doneButton = CGRectMake(appSize.width - 55, 5, 50, 34.0);
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        {
+            itemWidth = 149;
+            itemHeight = 149;
+        }
+        else
+        {
+            itemWidth = 100;
+            itemHeight = 100;
+        }
+        
         self.launcher = image;
         self.isInEditingMode = NO;
         
         // create the top bar
         self.title = boardTitle;
         navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, appSize.width, 44)];
+        navigationBar.barStyle = UIBarStyleBlack;
         
         // add a simple for displaying a title on the bar
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, appSize.width, 44)];
@@ -43,7 +61,7 @@
         // add a button to the right side that will become visible when the items are in editing mode
         // clicking this button ends editing mode for all items on the springboard
         doneEditingButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        doneEditingButton.frame = CGRectMake(265, 5, 50, 34.0);
+        doneEditingButton.frame = doneButton;
         [doneEditingButton setTitle:@"Done" forState:UIControlStateNormal];
         doneEditingButton.backgroundColor = [UIColor clearColor];
         [doneEditingButton addTarget:self action:@selector(doneEditingButtonClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -59,20 +77,6 @@
         [itemsContainer setPagingEnabled:YES];
         itemsContainer.showsHorizontalScrollIndicator = NO;
         [self addSubview:itemsContainer];
-        
-        int itemHeight;
-        int itemWidth;
-
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-        {
-            itemWidth = 149;
-            itemHeight = 150;
-        }
-        else
-        {
-            itemWidth = 100;
-            itemHeight = 100;
-        }
         
         int nColsPerRow = floor((appSize.width-20) / itemWidth);
         int itemsPerPage = floor((appSize.height-60) / itemHeight) * nColsPerRow;

@@ -132,6 +132,7 @@
     CGRect txtShadowRect;
     CGRect txtRect;
     CGRect btnRect;
+    CGRect rmBtn;
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
     {
@@ -139,6 +140,7 @@
         txtShadowRect = CGRectMake(0.0, 102.0, 150, 20.0);
         txtRect = CGRectMake(0.0, 100.0, 150, 20.0);
         btnRect = CGRectMake(0, 0, 150, 160);
+        rmBtn = CGRectMake(25, 5, 20, 20);
     }
     else
     {
@@ -146,6 +148,7 @@
         txtShadowRect = CGRectMake(0.0, 72.0, 100, 20.0);
         txtRect = CGRectMake(0.0, 70.0, 100, 20.0);
         btnRect = CGRectMake(0, 0, 150, 160);
+        rmBtn = CGRectMake(65, 5, 20, 20);
     }
     
     // draw the icon image
@@ -178,7 +181,7 @@
     if (self.isRemovable) {
         // place a remove button on top right corner for removing item from the board
         removeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [removeButton setFrame:CGRectMake(65, 5, 20, 20)];
+        [removeButton setFrame:rmBtn];
         [removeButton setImage:[UIImage imageNamed:@"btn_delete.png"] forState:UIControlStateNormal];
         removeButton.backgroundColor = [UIColor clearColor];
         [removeButton addTarget:self action:@selector(removeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
