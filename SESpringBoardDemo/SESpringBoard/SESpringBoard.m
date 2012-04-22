@@ -82,28 +82,29 @@
         int nColsPerRow = floor((appSize.width-20) / itemSize.width);
         int itemsPerPage = floor((appSize.height-60) / itemSize.height) * nColsPerRow;
         
-        self.items = menuItems;
         int counter = 0;
         int numberOfPages = (ceil((float)[menuItems count] / itemsPerPage));
+        self.items = [NSMutableArray arrayWithCapacity:numberOfPages];
+        
+        for (int i=0; i<numberOfPages; i++) {
+            NSMutableArray *tmp = [NSMutableArray arrayWithCapacity:itemsPerPage];
+            [self.items insertObject:tmp atIndex:i];
+        }
 
-        for (SEMenuItem *item in self.items) {
-            item.tag = counter;
+        for (SEMenuItem *item in menuItems) {
+            int page = floor(counter / itemsPerPage);
+            int pos = counter % itemsPerPage;
+
+            NSMutableArray *pagelist = [self.items objectAtIndex:page];
+            [pagelist insertObject:item atIndex:pos];
+            
+            item.tag = pos;
             item.delegate = self;
             [item setFrame:CGRectMake(0, 0, itemSize.width, itemSize.height)];
             [itemsContainer addSubview:item];
             
             counter++;
         }
-        
-        // record the item counts for each page
-        self.itemCounts = [NSMutableArray array];
-        int totalNumberOfItems = [self.items count];
-        int numberOfFullPages = totalNumberOfItems % itemsPerPage;
-        int lastPageItemCount = totalNumberOfItems - numberOfFullPages%itemsPerPage;
-        for (int i=0; i<numberOfFullPages; i++)
-            [self.itemCounts addObject:[NSNumber numberWithInteger:itemsPerPage]];
-        if (lastPageItemCount != 0)
-            [self.itemCounts addObject:[NSNumber numberWithInteger:lastPageItemCount]];
         
         [itemsContainer setContentSize:CGSizeMake(numberOfPages*(appSize.width-20), itemsContainer.frame.size.height)];
         
@@ -194,37 +195,28 @@
 
 - (void)removeFromSpringboard:(int)index
 {
+    NSMutableArray *pagelist = [self.items objectAtIndex:pageControl.currentPage];
+    
     // Remove the selected menu item from the springboard, it will have a animation while disappearing
-    SEMenuItem *menuItem = [items objectAtIndex:index];
+    SEMenuItem *menuItem = [pagelist objectAtIndex:index];
     [menuItem removeFromSuperview];
     
-    int w = (int) (appSize.width - 20);
-    
-    int numberOfItemsInCurrentPage = [[self.itemCounts objectAtIndex:pageControl.currentPage] intValue];
-    
-    // First find the index of the current item with respect of the current page
-    // so that only the items coming after the current item will be repositioned.
-    // The index of the item can be found by looking at its coordinates
-    int mult = ((int)menuItem.frame.origin.y) / 95;
-    int add = ((int)menuItem.frame.origin.x % w)/100;
-    int pageSpecificIndex = (mult*3) + add;
-    int remainingNumberOfItemsInPage = numberOfItemsInCurrentPage-pageSpecificIndex;
+    int numberOfItemsInCurrentPage = [pagelist count];
+    int remainingNumberOfItemsInPage = numberOfItemsInCurrentPage - index;
     
     int nColsPerRow = floor((appSize.width-20) / itemSize.width);
     
     // Select the items listed after the deleted menu item
     // and move each of the ones on the current page, one step back.
     // The first item of each row becomes the last item of the previous row.
-    for (int i = index+1; i<[items count]; i++) {
-        SEMenuItem *item = [items objectAtIndex:i];   
+    for (int i = index+1; i<[pagelist count]; i++) {
+        SEMenuItem *item = [pagelist objectAtIndex:i];   
         [UIView animateWithDuration:0.2 animations:^{
             
             // Only reposition the items in the current page, coming after the current item
             if (i < index + remainingNumberOfItemsInPage) {
-                
-                int intVal = item.frame.origin.x;
                 // Check if it is the first item in the row
-                if (intVal % nColsPerRow == 0) {
+                if (item.tag % nColsPerRow == 0) {
                     [item setFrame:CGRectMake(item.frame.origin.x+((nColsPerRow-1)*itemSize.width), item.frame.origin.y-(itemSize.height - 5), item.frame.size.width, item.frame.size.height)];
                 } else {
                     [item setFrame:CGRectMake(item.frame.origin.x-itemSize.width, item.frame.origin.y, item.frame.size.width, item.frame.size.height)];
@@ -236,18 +228,35 @@
             [item updateTag:item.tag-1];
         }]; 
     }
+    
     // remove the item from the array of items
-    [items removeObjectAtIndex:index];
-    // also decrease the record of the count of items on the current page and save it in the array holding the data
-    numberOfItemsInCurrentPage--;
-    [self.itemCounts replaceObjectAtIndex:pageControl.currentPage withObject:[NSNumber numberWithInteger:numberOfItemsInCurrentPage]];
+    [pagelist removeObjectAtIndex:index];
+    
+    // if the pagelist is now empty we need to get rid of the page
+    if ([pagelist count] == 0) {
+        int newPage = pageControl.currentPage - 1;
+        if (newPage < 0) { newPage = 0; }
+        
+        [self.items removeObjectAtIndex:pageControl.currentPage];
+        
+        int numberOfPages = [self.items count];
+        
+        [itemsContainer setContentSize:CGSizeMake(numberOfPages*(appSize.width-20), itemsContainer.frame.size.height)];
+        
+        pageControl.numberOfPages = numberOfPages;
+        pageControl.currentPage = newPage;
+        
+        if ([self.items count] == 1) {
+            [pageControl removeFromSuperview];
+        }
+    }
 }
 
 - (void)layoutItems {
     int nColsPerRow = floor((appSize.width-20) / itemSize.width);
     int itemsPerPage = floor((appSize.height-60) / itemSize.height) * nColsPerRow;
 
-    int numberOfPages = (ceil((float)[self.items count] / itemsPerPage));
+    int numberOfPages = [self.items count];
     
     itemsContainer.frame = CGRectMake(10, 50, appSize.width-20, appSize.height-60);
     [itemsContainer setContentSize:CGSizeMake(numberOfPages*(appSize.width-20), itemsContainer.frame.size.height)];
@@ -260,22 +269,25 @@
     int vergap = 0;
     int currentPage = 0;
     
-    for (SEMenuItem *item in self.items) {
-        currentPage = counter / itemsPerPage;
-        [item setFrame:CGRectMake(horgap + hpad + (currentPage*(appSize.width-20)), vergap, itemSize.width, itemSize.height)];
-
-        horgap = horgap + itemSize.width + hpad;
-        counter = counter + 1;
-        
-        if(counter % nColsPerRow == 0){
-            vergap = vergap + itemSize.height - 5;
-            horgap = 0;
+    for (NSMutableArray *pagelist in self.items) {
+        for (SEMenuItem *item in pagelist) {
+            [item setFrame:CGRectMake(horgap + hpad + (currentPage*(appSize.width-20)), vergap, itemSize.width, itemSize.height)];
+            
+            horgap = horgap + itemSize.width + hpad;
+            counter = counter + 1;
+            
+            if(counter % nColsPerRow == 0){
+                vergap = vergap + itemSize.height - 5;
+                horgap = 0;
+            }
+            
+            if (counter % itemsPerPage == 0) {
+                vergap = 0;
+                horgap = 0;
+            }
         }
         
-        if (counter % itemsPerPage == 0) {
-            vergap = 0;
-            horgap = 0;
-        }
+        currentPage++;
     }
 }
 
@@ -307,19 +319,26 @@
 
 #pragma mark - Custom Methods
 
-- (void) disableEditingMode {
+- (void) disableEditingMode
+{
     // loop thu all the items of the board and disable each's editing mode
-    for (SEMenuItem *item in items)
-        [item disableEditing];
+    for (NSMutableArray *pagelist in self.items) {
+        for (SEMenuItem *item in pagelist) {
+            [item disableEditing];
+        }
+    }      
     
     [doneEditingButton setHidden:YES];
     self.isInEditingMode = NO;
 }
 
-- (void) enableEditingMode {
-    
-    for (SEMenuItem *item in items)
-        [item enableEditing];
+- (void) enableEditingMode
+{
+    for (NSMutableArray *pagelist in self.items) {
+        for (SEMenuItem *item in pagelist) {
+            [item enableEditing];
+        }
+    }
     
     // show the done editing button
     [doneEditingButton setHidden:NO];
