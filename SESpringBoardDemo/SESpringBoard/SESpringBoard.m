@@ -91,6 +91,8 @@
             item.delegate = self;
             [item setFrame:CGRectMake(0, 0, itemSize.width, itemSize.height)];
             [itemsContainer addSubview:item];
+            
+            counter++;
         }
         
         // record the item counts for each page
@@ -222,10 +224,11 @@
                 
                 int intVal = item.frame.origin.x;
                 // Check if it is the first item in the row
-                if (intVal % nColsPerRow == 0)
+                if (intVal % nColsPerRow == 0) {
                     [item setFrame:CGRectMake(item.frame.origin.x+((nColsPerRow-1)*itemSize.width), item.frame.origin.y-(itemSize.height - 5), item.frame.size.width, item.frame.size.height)];
-                else 
+                } else {
                     [item setFrame:CGRectMake(item.frame.origin.x-itemSize.width, item.frame.origin.y, item.frame.size.width, item.frame.size.height)];
+                }
             }            
             
             // Update the tag to match with the index. Since the an item is being removed from the array, 
