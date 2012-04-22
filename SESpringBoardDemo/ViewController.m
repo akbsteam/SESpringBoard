@@ -24,12 +24,6 @@
     
     // Create an array of SEMenuItem objects
     NSMutableArray *items = [NSMutableArray array];
-//    [items addObject:[SEMenuItem initWithTitle:@"digg" imageName:@"digg.png" viewController:@"ChildViewController" removable:YES]];
-    [items addObject:[SEMenuItem initWithTitle:@"technorati" imageName:@"technorati.png" viewController:@"ChildViewController" removable:YES]];
-    [items addObject:[SEMenuItem initWithTitle:@"facebook" imageName:@"facebook.png" viewController:@"ChildViewController" removable:YES]];
-    [items addObject:[SEMenuItem initWithTitle:@"twitter" imageName:@"facebook.png" viewController:@"ChildViewController" removable:YES]];
-    [items addObject:[SEMenuItem initWithTitle:@"youtube" imageName:@"youtube.png" viewController:@"ChildViewController" removable:YES]];
-    [items addObject:[SEMenuItem initWithTitle:@"youtube" imageName:@"linkedin.png" viewController:@"ChildViewController" removable:YES]];
     
     NSString *path = [[NSBundle mainBundle] bundlePath];
 	NSString *finalPath = [path stringByAppendingPathComponent:@"default-items.plist"];
