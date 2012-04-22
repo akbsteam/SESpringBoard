@@ -13,18 +13,14 @@
 
 @implementation SEMenuItem
 
-@synthesize tag, delegate, isRemovable, isInEditingMode;
+@synthesize tag, delegate, isRemovable, isInEditingMode, viewControllerClass, image, titleText;
 
 #pragma mark - UI actions
 
 - (void) clickItem:(id) sender {
     UIButton *theButton = (UIButton *) sender;
     
-    if (vcToLoad == nil) {
-        vcToLoad = [[ChildViewController alloc] initWithNibName:@"ChildViewController" bundle:nil];
-    }
-    
-    [[self delegate] launch:theButton.tag :vcToLoad];
+    [[self delegate] launch:theButton.tag with:self.viewControllerClass];
 }
 
 - (void) pressedLong:(id) sender {
@@ -83,7 +79,7 @@
 
 #pragma mark - Initialization
 
-- (id) initWithTitle:(NSString *)title :(NSString *)imageName :(NSString *)viewController :(BOOL)removable {
+- (id) initWithTitle:(NSString *)title image:(NSString *)imageName vc:(NSString *)viewController removable:(BOOL)removable {
     
     int itemHeight;
     int itemWidth;
@@ -102,9 +98,9 @@
     self = [super initWithFrame:CGRectMake(0, 0, itemWidth, itemHeight)];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
-        viewControllerClass = viewController;
-        image = imageName;
-        titleText = title;
+        self.viewControllerClass = viewController;
+        self.image = imageName;
+        self.titleText = title;
         self.isInEditingMode = NO;
         self.isRemovable = removable;
     }
@@ -112,7 +108,7 @@
 }
 
 + (id) initWithTitle:(NSString *)title imageName:(NSString *)imageName viewController:(NSString *)viewController removable:(BOOL)removable  {
-	SEMenuItem *tmpInstance = [[[SEMenuItem alloc] initWithTitle:title :imageName :viewController :removable] autorelease];
+	SEMenuItem *tmpInstance = [[[SEMenuItem alloc] initWithTitle:title image:imageName vc:viewController removable:removable] autorelease];
 	return tmpInstance;
 }
 
@@ -160,17 +156,17 @@
     }
     
     // draw the icon image
-    UIImage* img = [UIImage imageNamed:image];
+    UIImage* img = [UIImage imageNamed:self.image];
     [img drawInRect:imgRect];
     
     // draw the menu item title shadow
-    NSString* shadowText = titleText;
+    NSString* shadowText = self.titleText;
     [[UIColor blackColor] set];
     UIFont *bold14 = [UIFont fontWithName:@"Helvetica-Bold" size:titleSize];
     [shadowText drawInRect:txtShadowRect withFont:bold14 lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentCenter];
     
     // draw the menu item title
-    NSString* text = titleText;
+    NSString* text = self.titleText;
     [[UIColor whiteColor] set];
     [text drawInRect:txtRect withFont:bold14 lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentCenter];
     

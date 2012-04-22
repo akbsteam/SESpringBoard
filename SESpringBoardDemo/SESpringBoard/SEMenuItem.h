@@ -10,19 +10,18 @@
 
 @protocol MenuItemDelegate;
 @interface SEMenuItem : UIView {
-    NSString *image;
-    NSString *titleText;
-    NSString *viewControllerClass;
-    UIViewController *vcToLoad;
-    id <MenuItemDelegate> delegate;
     UIButton *removeButton;   
 }
 
 @property (nonatomic, assign) int tag;
 @property BOOL isRemovable;
 @property BOOL isInEditingMode;
+@property (nonatomic, retain) NSString *viewControllerClass;
+@property (nonatomic, retain) NSString *image;
+@property (nonatomic, retain) NSString *titleText;
 @property (nonatomic, assign) id <MenuItemDelegate> delegate;
 
+- (id) initWithTitle:(NSString *)title image:(NSString *)imageName vc:(NSString *)viewController removable:(BOOL)removable;
 + (id) initWithTitle:(NSString *)title imageName:(NSString *)imageName viewController:(NSString *)viewController removable:(BOOL)removable;
 
 - (void) enableEditing;
@@ -34,7 +33,7 @@
 @protocol MenuItemDelegate <NSObject>
 @optional
 
-- (void)launch:(int)index :(UIViewController *)vcToLoad;
+- (void)launch:(int)index with:(NSString *)viewController;
 - (void)removeFromSpringboard:(int)index;
 
 @end

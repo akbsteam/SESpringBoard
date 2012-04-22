@@ -206,7 +206,7 @@
 
 #pragma mark - MenuItem Delegate Methods
 
-- (void)launch:(int)tag :viewController {
+- (void)launch:(int)tag with:(NSString *)viewController {
     
     // if the springboard is in editing mode, do not launch any view controller
     if (isInEditingMode)
@@ -217,14 +217,19 @@
     
     // create a navigation bar
     nav = [UINavigationController alloc];
-    SEViewController *vc = viewController;
+    
+    // NSLog(@"%@", viewController);
+    
+    SEViewController *vc = [[NSClassFromString(viewController) alloc] init];
     
     // manually trigger the appear method
-    [viewController viewDidAppear:YES];
+    [vc viewDidAppear:YES];
     
     vc.launcherImage = launcher;
-    [nav initWithRootViewController:viewController];
+    [nav initWithRootViewController:vc];
     [nav viewDidAppear:YES];
+    
+    [vc release];
     
     nav.view.alpha = 0.f;
     nav.view.transform = CGAffineTransformMakeScale(.1f, .1f);

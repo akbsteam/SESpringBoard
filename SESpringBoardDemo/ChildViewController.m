@@ -10,6 +10,13 @@
 
 @implementation ChildViewController
 
+- (id)init
+{
+    if (!(self = [super initWithNibName:@"ChildViewController" bundle:nil]))
+        return nil;
+    
+    return self;
+}
 
 #pragma mark - View lifecycle
 

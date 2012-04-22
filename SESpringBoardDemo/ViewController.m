@@ -43,7 +43,6 @@
     // Pass the array to a newly created SESpringBoard and add it to your view.
     // The launcher image is the image for the button on the top left corner of the view controller that is gonna appear in the screen
     // after a SEMenuItem is tapped. It is used for going back to the home screen
-    
     SESpringBoard *board = [SESpringBoard initWithTitle:@"Welcome" items:items launcherImage:[UIImage imageNamed:@"navbtn_home.png"]];
     [self.view addSubview:board];
 
