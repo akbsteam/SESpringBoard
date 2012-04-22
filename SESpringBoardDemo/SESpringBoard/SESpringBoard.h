@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SEMenuItem.h"
+#import "ChildViewController.h"
 
 @interface SESpringBoard : UIView <MenuItemDelegate, UIScrollViewDelegate> {
     UINavigationBar *navigationBar;
@@ -24,6 +25,8 @@
     
     int hpad;
     int vpad;
+    
+    ChildViewController *vc1;
 } 
 
 @property (nonatomic, retain) NSString *title;

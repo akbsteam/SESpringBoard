@@ -150,7 +150,7 @@
         txtShadowRect = CGRectMake(0.0, 52.0, 80, 20.0);
         txtRect = CGRectMake(0.0, 50.0, 80, 20.0);
         btnRect = CGRectMake(0, 0, 80, 90);
-        rmBtn = CGRectMake(65, 5, 20, 20);
+        rmBtn = CGRectMake(45, 5, 20, 20);
         titleSize = 12;
     }
     

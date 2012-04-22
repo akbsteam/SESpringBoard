@@ -8,7 +8,6 @@
 
 #import "SESpringBoard.h"
 #import "SEViewController.h"
-#import "ChildViewController.h"
 
 @implementation SESpringBoard
 
@@ -19,8 +18,6 @@
 }
 
 - (IBAction) addButtonClicked {
-    ChildViewController *vc1 = [[[ChildViewController alloc] initWithNibName:@"ChildViewController" bundle:nil] autorelease];
-    
     SEMenuItem *item = [SEMenuItem initWithTitle:@"facebook" imageName:@"facebook.png" viewController:vc1 removable:YES];
     
     item.delegate = self;
@@ -64,6 +61,8 @@
     self = [super initWithFrame:CGRectMake(0, 0, appSize.width, appSize.height)];    
     
     if (self) {
+        vc1 = [[ChildViewController alloc] initWithNibName:@"ChildViewController" bundle:nil];
+        
         [self setUserInteractionEnabled:YES];
 
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -194,6 +193,9 @@
     [itemCounts release];
     [titleLabel release];
     [itemsContainer release];
+    
+    [vc1 release];
+    
     [super dealloc];
 }
 
