@@ -6,6 +6,13 @@ Introduction
 
 SESpringBoard is an easy to use launcher view for you to use in your iPhone apps. Just add all the files under SESpringBoard into your project and you are good to go!
 
+[AKB]: This version has some significant differences to the original.
+
+  - It uses a plist for the menuitems at start up
+  - It allows user to add new items (at the moment hard coded)
+  - It is now universal - runs on iPad and iPhone/iPod Touch
+  - It now supports auto-rotating
+
 Usage
 ---------------------
 
