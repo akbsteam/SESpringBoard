@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		15A77F02154419510054E363 /* ViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15A77EFE154419510054E363 /* ViewController-iPad.xib */; };
-		15A77F03154419510054E363 /* ViewController-iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15A77F00154419510054E363 /* ViewController-iPhone.xib */; };
+		15A77F02154419510054E363 /* ViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15A77EFE154419510054E363 /* ViewController~ipad.xib */; };
+		15A77F03154419510054E363 /* ViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15A77F00154419510054E363 /* ViewController~iphone.xib */; };
 		15A77F1515446EE90054E363 /* default-items.plist in Resources */ = {isa = PBXBuildFile; fileRef = 15A77F1415446EE90054E363 /* default-items.plist */; };
 		7514C0CC14654F0700FEF1E6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7514C0CB14654F0700FEF1E6 /* UIKit.framework */; };
 		7514C0CE14654F0700FEF1E6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7514C0CD14654F0700FEF1E6 /* Foundation.framework */; };
@@ -38,8 +38,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		15A77EFF154419510054E363 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/ViewController-iPad.xib"; sourceTree = "<group>"; };
-		15A77F01154419510054E363 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/ViewController-iPhone.xib"; sourceTree = "<group>"; };
+		15A77EFF154419510054E363 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/ViewController~ipad.xib"; sourceTree = "<group>"; };
+		15A77F01154419510054E363 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/ViewController~iphone.xib"; sourceTree = "<group>"; };
 		15A77F1415446EE90054E363 /* default-items.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "default-items.plist"; sourceTree = "<group>"; };
 		7514C0C714654F0700FEF1E6 /* SESpringBoardDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SESpringBoardDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7514C0CB14654F0700FEF1E6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -128,8 +128,8 @@
 				7514C0DB14654F0700FEF1E6 /* AppDelegate.m */,
 				7514C0DD14654F0700FEF1E6 /* ViewController.h */,
 				7514C0DE14654F0700FEF1E6 /* ViewController.m */,
-				15A77EFE154419510054E363 /* ViewController-iPad.xib */,
-				15A77F00154419510054E363 /* ViewController-iPhone.xib */,
+				15A77EFE154419510054E363 /* ViewController~ipad.xib */,
+				15A77F00154419510054E363 /* ViewController~iphone.xib */,
 				7514C1271465AA4900FEF1E6 /* ChildViewController.h */,
 				7514C1281465AA4900FEF1E6 /* ChildViewController.m */,
 				7514C1291465AA4900FEF1E6 /* ChildViewController.xib */,
@@ -248,8 +248,8 @@
 				75272FC31465FF6A004F0CF3 /* su.png in Resources */,
 				75272FC41465FF6A004F0CF3 /* digg.png in Resources */,
 				7576E995150A266D002836BE /* btn_delete.png in Resources */,
-				15A77F02154419510054E363 /* ViewController-iPad.xib in Resources */,
-				15A77F03154419510054E363 /* ViewController-iPhone.xib in Resources */,
+				15A77F02154419510054E363 /* ViewController~ipad.xib in Resources */,
+				15A77F03154419510054E363 /* ViewController~iphone.xib in Resources */,
 				15A77F1515446EE90054E363 /* default-items.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -274,20 +274,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		15A77EFE154419510054E363 /* ViewController-iPad.xib */ = {
+		15A77EFE154419510054E363 /* ViewController~ipad.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				15A77EFF154419510054E363 /* en */,
 			);
-			name = "ViewController-iPad.xib";
+			name = "ViewController~ipad.xib";
 			sourceTree = "<group>";
 		};
-		15A77F00154419510054E363 /* ViewController-iPhone.xib */ = {
+		15A77F00154419510054E363 /* ViewController~iphone.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				15A77F01154419510054E363 /* en */,
 			);
-			name = "ViewController-iPhone.xib";
+			name = "ViewController~iphone.xib";
 			sourceTree = "<group>";
 		};
 		7514C0D414654F0700FEF1E6 /* InfoPlist.strings */ = {
