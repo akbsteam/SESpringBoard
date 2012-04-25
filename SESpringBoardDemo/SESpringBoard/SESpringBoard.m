@@ -66,8 +66,6 @@
     if (self) {
         [self setUserInteractionEnabled:YES];
 
-        self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        
         CGRect doneButton = CGRectMake(appSize.width - 55, 5, 50, 34.0);
         CGRect addButtonFrame = CGRectMake(5, 5, 50, 34.0);
         
@@ -335,6 +333,8 @@
     int nItemsPerPage = [self itemsPerPage];
 
     int numberOfPages = [self.items count];
+    
+    self.frame = CGRectMake(0,0,appSize.width,appSize.height);
     
     itemsContainer.frame = CGRectMake(10, 50, appSize.width-20, appSize.height-60);
     [itemsContainer setContentSize:CGSizeMake(numberOfPages*(appSize.width-20), itemsContainer.frame.size.height)];
